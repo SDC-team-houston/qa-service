@@ -7,9 +7,10 @@ const path = require('path');
 const { Pool, Client } = require('pg');
 const copyFrom = require('pg-copy-streams').from;
 const config = require('./config.json');
+const timer = require('../helpers/timer.js');
 
-// inputfile & target table
-const inputFile = path.join(__dirname, '/csv/dummyQuestions.csv');
+// raw/transformed csv files & target table
+const inputFile = path.join(__dirname, '/csv/questions.csv');
 const transformedFile = path.join(__dirname, '/csv/transformedQuestions.csv');
 var table = 'public.questions';
 
@@ -31,10 +32,10 @@ const csvWriter = createCsvWriter({
   ]
 });
 
-// timer func
-function getElapsedTime(start, end) {
-  return `(${Math.ceil((end.getTime() - start.getTime()) / 1000)} s)`;
-}
+// // timer func
+// function getElapsedTime(start, end) {
+//   return `(${Math.ceil((end.getTime() - start.getTime()) / 1000)} s)`;
+// }
 
 // Getting connection parameters from config.json
 const host = config.host;
@@ -58,9 +59,7 @@ const fileStream = fs
   .createReadStream(inputFile)
   .pipe(csvParse())
   .on('data', (row) => {
-    // getting rid of incomplete data
     if (row.helpful) {
-      // transforming date fields into consistent format
       let date = row.date_written;
 
       if (!date.match(/[A-z]/g)) {
@@ -76,41 +75,42 @@ const fileStream = fs
   })
   .on('end', async () => {
     const endRaw = new Date();
-    console.info(`Raw CSV file successfully processed 📜 ${getElapsedTime(start, endRaw)} ...`);
+    console.info(`Raw CSV file successfully processed ✅ ${timer(start, endRaw)} ...`);
 
-    await fs.truncate(transformedFile, 0, () => console.info(`...transformed CSV file emptied, ready to write 🗒️ ...`));
+    await fs.truncate(transformedFile, 0, () => console.info(`...transformed CSV file emptied, ready to write ✅ ...`));
 
     csvWriter.writeRecords(transformedData)
       .then(() => {
         const endWrite = new Date();
-        console.info(`...done writing transformed data 🥳 ${getElapsedTime(endRaw, endWrite)}`);
-      })
-      .then(() => {
-        // Execute Copy Function
-        var stream = client.query(copyFrom(`COPY ${table} FROM '${transformedFile}' DELIMITER ',' CSV HEADER`));
-        // var stream = client.query(`COPY ${table} FROM '${transformedFile}' DELIMITER ',' CSV HEADER`);
-        console.log('stream', stream);
-
-        stream.then(res => {
-          console.log(`Completed loading data into ${table}`)
-          client.end()
-        })
-          .catch(error => {
-          console.log(`Error in copy command: ${error}`)
-        });
-
-        // stream.on('error', (error) => {
-        //   console.log(`Error in copy command: ${error}`)
-        // });
-        // stream.on('end', () => {
-        //   console.log(`Completed loading data into ${table}`)
-        //   client.end()
-        // });
-        fileStream.pipe(stream);
+        console.info(`...done writing transformed data 🥳 ${timer(endRaw, endWrite)}`);
       });
+    // .then(() => {
+    //   // Execute Copy Function
+    //   var stream = client.query(copyFrom(`COPY ${table} FROM '${transformedFile}' DELIMITER ',' CSV HEADER`));
+    //   // var stream = client.query(`COPY ${table} FROM '${transformedFile}' DELIMITER ',' CSV HEADER`);
+    //   console.log('stream', stream);
+
+    //   stream.then(res => {
+    //     console.log(`Completed loading data into ${table}`)
+    //     client.end()
+    //   })
+    //     .catch(error => {
+    //     console.log(`Error in copy command: ${error}`)
+    //   });
+
+    //   // stream.on('error', (error) => {
+    //   //   console.log(`Error in copy command: ${error}`)
+    //   // });
+    //   // stream.on('end', () => {
+    //   //   console.log(`Completed loading data into ${table}`)
+    //   //   client.end()
+    //   // });
+    //   fileStream.pipe(stream);
+    // });
   });
 
 
 
 
 
+// \COPY questions from '/Users/Sunil/HackReactor/coding/sdc/qa-service/src/data/csv/transformedQuestions.csv' DELIMITER ',' CSV HEADER;
