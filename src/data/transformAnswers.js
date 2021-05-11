@@ -74,7 +74,7 @@ const fileStream = fs
       })
       .then(() => {
         const endWrite = new Date();
-        console.info(`...done writing transformed data 🥳 ${timer(endRaw, endWrite)}`);
+        console.info(`...done writing transformed data 🥳 ${timer(write1, endWrite)}`);
       })
       .catch(err => console.error(err));
   });

@@ -1,0 +1,5 @@
+# giant csv files
+node_modules/*
+!node_modules/nodemon
+src/data/csv
+.DS_Store

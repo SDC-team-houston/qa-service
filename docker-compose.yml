@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_PASSWORD: ''
+      POSTGRES_USER: Sunil
+      POSTGRES_DB: sdc
+      DATABASE_URL: postgres://Sunil:@localhost:5432/sdc
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: 'sdc-qa/node'
+    depends_on:
+      - db
+    ports:
+      - '3000:3004'
