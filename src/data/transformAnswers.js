@@ -4,7 +4,7 @@ const moment = require('moment');
 const csvParse = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const path = require('path');
-const timer = require('../helpers/timer.js');
+const timer = require('./timer.js');
 
 // raw/transformed csv files
 const inputFile = path.join(__dirname, '/csv/answers.csv');

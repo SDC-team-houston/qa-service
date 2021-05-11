@@ -1,14 +1,8 @@
-const { Pool, Client } = require('pg');
+const { Pool } = require('pg');
 
 // pools will use environment variables
 // for connection information
-const pool = new Pool({
-  user: 'Sunil',
-  host: 'localhost',
-  database: 'sdc',
-  password: '',
-  port: '5432',
-});
+const pool = new Pool();
 
 // Get questions and answers for a passed-in product ID
 const getQAs = (product_id, callback) => {

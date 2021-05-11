@@ -16,7 +16,5 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: 'sdc-qa/node'
-    depends_on:
-      - db
     ports:
       - '3000:3004'

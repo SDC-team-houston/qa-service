@@ -1,5 +1,4 @@
 const express = require('express');
-// const morgan = require('morgan');
 const queries = require('./queries.js');
 const cors = require('cors');
 
@@ -7,10 +6,6 @@ const app = express();
 
 app.use(cors());
 
-/**
- * routes to write: GET qas, POST question, POST answer
- * PUT helpful q, PUT report q, PUT helpful ans, PUT report ans
- */
 
 // Get questions and answers for a specified product
 app.get(`/qa/:id`, (req, res) => {
@@ -113,22 +108,6 @@ app.put(`/qa/answers/:id/report`, (req, res) => {
     }
   });
 });
-
-// const markQAsHelpful = (questionId) => {
-//   return axios.put(`${url}/qa/question/${questionId}/helpful`);
-// };
-
-// const reportQuestion = (questionId) => {
-//   return axios.put(`${url}/qa/question/${questionId}/report`);
-// };
-
-// const markAnsAsHelpful = (answerID) => {
-//   return axios.put(`${url}/qa/answer/${answerID}/helpful`);
-// };
-
-// const reportAns = (answerID) => {
-//   return axios.put(`${url}/qa/answer/${answerID}/report`);
-// };
 
 const PORT = 3004;
 

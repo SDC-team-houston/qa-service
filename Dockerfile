@@ -6,7 +6,7 @@ COPY . .
 RUN npm install
 
 # RUN mkdir -p /app/config /app/src
-WORKDIR /app
+# WORKDIR /app
 
 # COPY package.json ./package.json
 # COPY package-lock.json ./package-lock.json

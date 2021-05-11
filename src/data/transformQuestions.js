@@ -7,7 +7,7 @@ const path = require('path');
 const { Pool, Client } = require('pg');
 const copyFrom = require('pg-copy-streams').from;
 // const config = require('./config.json');
-const timer = require('../helpers/timer.js');
+const timer = require('./timer.js');
 
 // raw/transformed csv files & target table
 const inputFile = path.join(__dirname, '/csv/questions.csv');

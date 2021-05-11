@@ -14,3 +14,17 @@ docker exec -it 2d14079a8fec psql -U postgres sdc-qa
 1. docker-compose.yml
 2. Retry logic
 3. up/down
+
+
+{
+  user: 'Sunil',
+  host: 'localhost',
+  database: 'sdc',
+  password: '',
+  port: '5432',
+}
+
+
+
+
+ssh -i Sunilkey.pem ubuntu@3.87.147.13
