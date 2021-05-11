@@ -6,8 +6,8 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const path = require('path');
 const { Pool, Client } = require('pg');
 const copyFrom = require('pg-copy-streams').from;
-const config = require('./config.json');
-const timer = require('../helpers/timer.js');
+// const config = require('./config.json');
+const timer = require('./timer.js');
 
 // raw/transformed csv files & target table
 const inputFile = path.join(__dirname, '/csv/questions.csv');
@@ -32,24 +32,19 @@ const csvWriter = createCsvWriter({
   ]
 });
 
-// // timer func
-// function getElapsedTime(start, end) {
-//   return `(${Math.ceil((end.getTime() - start.getTime()) / 1000)} s)`;
-// }
+// // Getting connection parameters from config.json
+// const host = config.host;
+// const user = config.user;
+// const pw = config.pw;
+// const db = config.db;
+// const port = config.port;
+// const conString = `postgres://${user}:${pw}@${host}:${port}/${db}`;
 
-// Getting connection parameters from config.json
-const host = config.host;
-const user = config.user;
-const pw = config.pw;
-const db = config.db;
-const port = config.port;
-const conString = `postgres://${user}:${pw}@${host}:${port}/${db}`;
-
-// Connecting to Database
-const client = new Client({
-  connectionString: conString,
-});
-client.connect();
+// // Connecting to Database
+// const client = new Client({
+//   connectionString: conString,
+// });
+// client.connect();
 
 // start timer
 const start = new Date();
