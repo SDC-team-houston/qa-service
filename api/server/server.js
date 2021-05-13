@@ -1,15 +1,20 @@
 const express = require('express');
-const queries = require('./queries.js');
+const queries = require('../db/queries.js');
 const cors = require('cors');
 
 const app = express();
 
 app.use(cors());
 
+// just making the sure the server by itself is working!
+app.get(`/test`, (req, res) => {
+  res.send('Hello!')
+});
+
 
 // Get questions and answers for a specified product
 app.get(`/qa/:id`, (req, res) => {
-  let product_id = req.params.id;
+  const product_id = req.params.id;
   queries.getQAs(product_id, (err, questionsAnswers) => {
     if (err) {
       res.status(400).send('Data not found.');
@@ -67,6 +72,7 @@ app.post(`/qa/answers/:id/`, (req, res) => {
 
 // Update helpfulness of question
 app.put(`/qa/questions/:id/helpful`, (req, res) => {
+  const question_id = req.params.id;
   queries.markQuestionHelpful(question_id, (err, response) => {
     if (err) {
       res.status(400).send('Post unsuccessful.');
@@ -78,6 +84,7 @@ app.put(`/qa/questions/:id/helpful`, (req, res) => {
 
 // Report question
 app.put(`/qa/questions/:id/report`, (req, res) => {
+  const question_id = req.params.id;
   queries.reportQuestion(question_id, (err, response) => {
     if (err) {
       res.status(400).send('Post unsuccessful.');
@@ -89,6 +96,7 @@ app.put(`/qa/questions/:id/report`, (req, res) => {
 
 // Update helpfulness of answer
 app.put(`/qa/answers/:id/helpful`, (req, res) => {
+  const answer_id = req.params.id;
   queries.markAnswerHelpful(answer_id, (err, response) => {
     if (err) {
       res.status(400).send('Post unsuccessful.');
@@ -100,6 +108,7 @@ app.put(`/qa/answers/:id/helpful`, (req, res) => {
 
 // Report answer
 app.put(`/qa/answers/:id/report`, (req, res) => {
+  const answer_id = req.params.id;
   queries.reportAnswer(answer_id, (err, response) => {
     if (err) {
       res.status(400).send('Post unsuccessful.');

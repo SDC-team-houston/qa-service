@@ -3,18 +3,24 @@ services:
   db:
     image: 'postgres:latest'
     environment:
-      POSTGRES_PASSWORD: ''
+      POSTGRES_PASSWORD: password
       POSTGRES_USER: Sunil
       POSTGRES_DB: sdc
-      DATABASE_URL: postgres://Sunil:@localhost:5432/sdc
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+      - ./api:/api
     ports:
       - '5432:5432'
-  web:
+  server:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: 'sdc-qa/node'
+    image: 'server'
+    environment:
+      DB_HOST: host.docker.internal
+      DB_USER: Sunil
+      DB_PASS: password
+    volumes:
+      - ./api:/api
     ports:
-      - '3000:3004'
+      - '3004:3004'
