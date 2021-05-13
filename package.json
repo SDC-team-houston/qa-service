@@ -2,10 +2,11 @@
   "name": "qa-api-service",
   "version": "1.0.0",
   "description": "sdc project to handle webscale traffic",
-  "main": "server-qa.js",
+  "main": "api/server/server.js",
   "scripts": {
     "test": "npm run test",
-    "start": "nodemon ./src/server/server.js"
+    "start": "nodemon api/server/server.js",
+    "start:container": "node api/server/server.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "csv-parse": "^4.15.4",
     "csv-parser": "^3.0.0",
     "csv-writer": "^1.6.0",
+    "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",
     "fs": "*",
@@ -34,6 +36,7 @@
     "nodemon": "^2.0.7",
     "path": "^0.12.7",
     "pg": "^8.6.0",
-    "pg-copy-streams": "^5.1.1"
+    "pg-copy-streams": "^5.1.1",
+    "semver": "^5.7.1"
   }
 }

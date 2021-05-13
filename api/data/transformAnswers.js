@@ -1,9 +1,9 @@
 // Import required modules
 const fs = require('fs');
 const moment = require('moment');
+const path = require('path');
 const csvParse = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const path = require('path');
 const timer = require('./timer.js');
 
 // raw/transformed csv files
@@ -77,7 +77,4 @@ const fileStream = fs
         console.info(`...done writing transformed data 🥳 ${timer(write1, endWrite)}`);
       })
       .catch(err => console.error(err));
-  });
-
-
-// \COPY answers from '/Users/Sunil/HackReactor/coding/sdc/qa-service/src/data/csv/transformedAnswers.csv' DELIMITER ',' CSV HEADER;
+});

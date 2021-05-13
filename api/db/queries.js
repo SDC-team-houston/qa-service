@@ -1,8 +1,15 @@
 const { Pool } = require('pg');
+require('dotenv').config();
 
 // pools will use environment variables
 // for connection information
-const pool = new Pool();
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATA,
+  password: process.env.DB_PASS,
+  port: process.env.DB_PORT,
+});
 
 // Get questions and answers for a passed-in product ID
 const getQAs = (product_id, callback) => {
@@ -127,7 +134,7 @@ const markQuestionHelpful = (question_id, callback) => {
   const questionHelpfulQuery = `
     UPDATE questions
     SET helpful = helpful + 1
-    WHERE question_id = $1
+    WHERE id = $1
     RETURNING *
   `
 
@@ -147,7 +154,7 @@ const reportQuestion = (question_id, callback) => {
   const reportQuestionQuery = `
     UPDATE questions
     SET reported = true
-    WHERE question_id = $1
+    WHERE id = $1
     RETURNING *
   `
 
@@ -167,7 +174,7 @@ const markAnswerHelpful = (answer_id, callback) => {
   const answerHelpfulQuery = `
     UPDATE answers
     SET helpful = helpful + 1
-    WHERE answer_id = $1
+    WHERE id = $1
     RETURNING *
   `
 
@@ -187,7 +194,7 @@ const reportAnswer = (answer_id, callback) => {
   const reportQuestionQuery = `
     UPDATE answers
     SET reported = true
-    WHERE answer_id = $1
+    WHERE id = $1
     RETURNING *
   `
 

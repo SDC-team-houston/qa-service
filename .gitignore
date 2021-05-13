@@ -1,5 +1,7 @@
 node_modules/
-src/data/csv/
+api/data/csv/
 .DS_Store
 pgdata/
-commands.txt
+package-lock.json
+command.txt
+.env
