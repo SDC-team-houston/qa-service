@@ -2,6 +2,6 @@ node_modules/
 api/data/csv/
 .DS_Store
 pgdata/
-package-lock.json
+/package-lock.json
 command.txt
-.env
+/.env
