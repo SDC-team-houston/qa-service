@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-console.log('password?', process.env.DB_PASS);
+
 // pools will use environment variables
 // for connection information
 const pool = new Pool({
