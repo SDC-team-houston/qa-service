@@ -37,7 +37,7 @@ const getQAs = (product_id, callback) => {
     )
     FROM questions
     WHERE product_id = $1 AND questions.reported = false
-  `
+  `;
   ; (async () => {
     const client = await pool.connect();
     try {
@@ -47,7 +47,7 @@ const getQAs = (product_id, callback) => {
       client.release();
     }
   })().catch(err => console.log(err.stack));
-}
+};
 
 // Post a new question for a specified product
 const askQuestion = (product_id, text, name, email, callback) => {
@@ -65,7 +65,7 @@ const askQuestion = (product_id, text, name, email, callback) => {
       $1, $2, NOW(), $3, $4, false, 0
     )
     RETURNING *
-  `
+  `;
   ; (async () => {
     const client = await pool.connect();
     try {
@@ -93,7 +93,7 @@ const answerQuestion = (question_id, text, name, email, callback) => {
       $1, $2, NOW(), $3, $4, false, 0
     )
     RETURNING *
-  `
+  `;
 
   ; (async () => {
     const client = await pool.connect();
@@ -117,7 +117,7 @@ const addPhoto = (answer_id, url, callback) => {
       $1, $2
     )
     RETURNING *
-  `
+  `;
 
   ; (async () => {
     const client = await pool.connect();
@@ -137,7 +137,7 @@ const markQuestionHelpful = (question_id, callback) => {
     SET helpful = helpful + 1
     WHERE id = $1
     RETURNING *
-  `
+  `;
 
   ; (async () => {
     const client = await pool.connect();
@@ -157,7 +157,7 @@ const reportQuestion = (question_id, callback) => {
     SET reported = true
     WHERE id = $1
     RETURNING *
-  `
+  `;
 
   ; (async () => {
     const client = await pool.connect();
@@ -177,7 +177,7 @@ const markAnswerHelpful = (answer_id, callback) => {
     SET helpful = helpful + 1
     WHERE id = $1
     RETURNING *
-  `
+  `;
 
   ; (async () => {
     const client = await pool.connect();
@@ -197,7 +197,7 @@ const reportAnswer = (answer_id, callback) => {
     SET reported = true
     WHERE id = $1
     RETURNING *
-  `
+  `;
 
   ; (async () => {
     const client = await pool.connect();
