@@ -32,9 +32,7 @@ app.get(`/qa/:id`, (req, res) => {
 // Post a new question for a specified product
 app.post(`/qa/:id`, (req, res) => {
   const product_id = req.params.id;
-  const text = query.text;
-  const name = req.query.name;
-  const email = req.query.email;
+  const { text, name, email } = req.query;
 
   queries.askQuestion(product_id, text, name, email, (err, response) => {
     if (err) {
@@ -48,9 +46,7 @@ app.post(`/qa/:id`, (req, res) => {
 // Post an answer to a specified question
 app.post(`/qa/questions/:id/`, (req, res) => {
   const question_id = req.params.id;
-  const text = req.query.text;
-  const name = req.query.name;
-  const email = req.query.email;
+  const { text, name, email } = req.query;
 
   queries.answerQuestion(question_id, text, name, email, (err, response) => {
     if (err) {
