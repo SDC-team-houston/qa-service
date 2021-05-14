@@ -1,6 +1,7 @@
 const express = require('express');
 const queries = require('../db/queries.js');
 const cors = require('cors');
+const loader = require('./loader.txt');
 
 const app = express();
 
@@ -11,6 +12,10 @@ app.get(`/test`, (req, res) => {
   res.send('Hello!')
 });
 
+// loader.io get request
+app.get(`/loaderio-3bcf5ce4961cbc7b4d00ec749424b041`, (req, res) => {
+  res.send(loader);
+});
 
 // Get questions and answers for a specified product
 app.get(`/qa/:id`, (req, res) => {
@@ -27,7 +32,7 @@ app.get(`/qa/:id`, (req, res) => {
 // Post a new question for a specified product
 app.post(`/qa/:id`, (req, res) => {
   const product_id = req.params.id;
-  const text = req.query.text;
+  const text = query.text;
   const name = req.query.name;
   const email = req.query.email;
 
@@ -37,7 +42,7 @@ app.post(`/qa/:id`, (req, res) => {
     } else {
       res.send('Question posted!');
     }
-  })
+  });
 });
 
 // Post an answer to a specified question
@@ -53,7 +58,7 @@ app.post(`/qa/questions/:id/`, (req, res) => {
     } else {
       res.send('Answer posted!');
     }
-  })
+  });
 });
 
 // Post a photo to attach to an answer
@@ -67,7 +72,7 @@ app.post(`/qa/answers/:id/`, (req, res) => {
     } else {
       res.send('Photo posted!');
     }
-  })
+  });
 });
 
 // Update helpfulness of question
@@ -121,5 +126,5 @@ app.put(`/qa/answers/:id/report`, (req, res) => {
 const PORT = 3004;
 
 app.listen(PORT, () => {
-  console.info(`listening on ${PORT}...`)
-})
+  console.info(`listening on ${PORT}...`);
+});
