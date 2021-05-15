@@ -1,6 +1,7 @@
 const { Pool } = require('pg');
 require('dotenv').config();
-
+const q = require('./questionQueries.js');
+const a = require('./answerQueries.js')
 
 // pools will use environment variables
 // for connection information
@@ -12,36 +13,14 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
+/* QUESTIONS =============================================== */
+
 // Get questions and answers for a passed-in product ID
 const getQAs = (product_id, callback) => {
-  const combinedQuery = `
-    SELECT *,
-    (
-      SELECT (jsonb_agg(json_build_object(
-        'id', answers.id,
-        'question_id', answers.question_id,
-        'body', answers.body,
-        'date_written', answers.date_written,
-        'answerer_name', answers.answerer_name,
-        'answerer_email', answers.answerer_email,
-        'helpful', answers.helpful,
-        'photos',
-          (
-            SELECT (jsonb_agg(answers_photos.url)) AS photos
-            FROM answers_photos
-            WHERE answers_photos.answer_id = answers.id
-          )
-      ))) AS answers
-      FROM answers
-      WHERE question_id = questions.id AND answers.reported = false
-    )
-    FROM questions
-    WHERE product_id = $1 AND questions.reported = false
-  `;
   ; (async () => {
     const client = await pool.connect();
     try {
-      const res = await client.query(combinedQuery, [product_id]);
+      const res = await client.query(q.getAll, [product_id]);
       callback(null, res.rows);
     } finally {
       client.release();
@@ -51,78 +30,10 @@ const getQAs = (product_id, callback) => {
 
 // Post a new question for a specified product
 const askQuestion = (product_id, text, name, email, callback) => {
-  const questionQuery = `
-    INSERT INTO questions (
-      product_id,
-      body,
-      date_written,
-      asker_name,
-      asker_email,
-      reported,
-      helpful
-    )
-    VALUES (
-      $1, $2, NOW(), $3, $4, false, 0
-    )
-    RETURNING *
-  `;
   ; (async () => {
     const client = await pool.connect();
     try {
-      const res = await client.query(questionQuery, [product_id, text, name, email]);
-      callback(null, res);
-    } finally {
-      client.release();
-    }
-  })().catch(err => console.log(err.stack));
-};
-
-// Post a new Answer
-const answerQuestion = (question_id, text, name, email, callback) => {
-  const answerQuery = `
-    INSERT INTO answers (
-      question_id,
-      body,
-      date_written,
-      answerer_name,
-      answerer_email,
-      reported,
-      helpful
-    )
-    VALUES (
-      $1, $2, NOW(), $3, $4, false, 0
-    )
-    RETURNING *
-  `;
-
-  ; (async () => {
-    const client = await pool.connect();
-    try {
-      const res = await client.query(answerQuery, [question_id, text, name, email]);
-      callback(null, res);
-    } finally {
-      client.release();
-    }
-  })().catch(err => console.log(err.stack));
-};
-
-// Post a photo to an answer
-const addPhoto = (answer_id, url, callback) => {
-  const photoQuery = `
-    INSERT INTO answers_photos (
-      answer_id,
-      url,
-    )
-    VALUES (
-      $1, $2
-    )
-    RETURNING *
-  `;
-
-  ; (async () => {
-    const client = await pool.connect();
-    try {
-      const res = await client.query(photoQuery, [answer_id, url]);
+      const res = await client.query(q.askQuestion, [product_id, text, name, email]);
       callback(null, res);
     } finally {
       client.release();
@@ -132,17 +43,10 @@ const addPhoto = (answer_id, url, callback) => {
 
 // Update helpfulness of question
 const markQuestionHelpful = (question_id, callback) => {
-  const questionHelpfulQuery = `
-    UPDATE questions
-    SET helpful = helpful + 1
-    WHERE id = $1
-    RETURNING *
-  `;
-
   ; (async () => {
     const client = await pool.connect();
     try {
-      const res = await client.query(questionHelpfulQuery, [question_id]);
+      const res = await client.query(q.markQuestionHelpful, [question_id]);
       callback(null, res);
     } finally {
       client.release();
@@ -152,17 +56,38 @@ const markQuestionHelpful = (question_id, callback) => {
 
 // Report question
 const reportQuestion = (question_id, callback) => {
-  const reportQuestionQuery = `
-    UPDATE questions
-    SET reported = true
-    WHERE id = $1
-    RETURNING *
-  `;
-
   ; (async () => {
     const client = await pool.connect();
     try {
-      const res = await client.query(reportQuestionQuery, [question_id]);
+      const res = await client.query(q.reportQuestion, [question_id]);
+      callback(null, res);
+    } finally {
+      client.release();
+    }
+  })().catch(err => console.log(err.stack));
+};
+
+/* ANSWERS =============================================== */
+
+// Post a new Answer
+const answerQuestion = (question_id, text, name, email, callback) => {
+  ; (async () => {
+    const client = await pool.connect();
+    try {
+      const res = await client.query(a.answerQuestion, [question_id, text, name, email]);
+      callback(null, res);
+    } finally {
+      client.release();
+    }
+  })().catch(err => console.log(err.stack));
+};
+
+// Post a photo to an answer
+const addPhoto = (answer_id, url, callback) => {
+  ; (async () => {
+    const client = await pool.connect();
+    try {
+      const res = await client.query(a.answerPhoto, [answer_id, url]);
       callback(null, res);
     } finally {
       client.release();
@@ -172,17 +97,10 @@ const reportQuestion = (question_id, callback) => {
 
 // Update helpfulness of answer
 const markAnswerHelpful = (answer_id, callback) => {
-  const answerHelpfulQuery = `
-    UPDATE answers
-    SET helpful = helpful + 1
-    WHERE id = $1
-    RETURNING *
-  `;
-
   ; (async () => {
     const client = await pool.connect();
     try {
-      const res = await client.query(answerHelpfulQuery, [answer_id]);
+      const res = await client.query(a.markAnswerHelpful, [answer_id]);
       callback(null, res);
     } finally {
       client.release();
@@ -192,17 +110,10 @@ const markAnswerHelpful = (answer_id, callback) => {
 
 // Report answer
 const reportAnswer = (answer_id, callback) => {
-  const reportQuestionQuery = `
-    UPDATE answers
-    SET reported = true
-    WHERE id = $1
-    RETURNING *
-  `;
-
   ; (async () => {
     const client = await pool.connect();
     try {
-      const res = await client.query(reportQuestionQuery, [answer_id]);
+      const res = await client.query(a.reportAnswer, [answer_id]);
       callback(null, res);
     } finally {
       client.release();
