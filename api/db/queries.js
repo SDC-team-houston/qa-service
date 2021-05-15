@@ -1,6 +1,7 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+
 // pools will use environment variables
 // for connection information
 const pool = new Pool({

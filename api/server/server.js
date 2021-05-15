@@ -13,7 +13,7 @@ app.get(`/test`, (req, res) => {
 });
 
 // loader.io get request
-app.get(`/loaderio-3bcf5ce4961cbc7b4d00ec749424b041`, (req, res) => {
+app.get(`/loaderio-ce4e83dc4c356f2e672c834e1d566dd7`, (req, res) => {
   res.send(loader);
 });
 
