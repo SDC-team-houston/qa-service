@@ -17,6 +17,8 @@ app.get(`/loaderio-ce4e83dc4c356f2e672c834e1d566dd7`, (req, res) => {
   res.send(loader);
 });
 
+/* GET ALL =========================================== */
+
 // Get questions and answers for a specified product
 app.get(`/qa/:id`, (req, res) => {
   const product_id = req.params.id;
@@ -28,6 +30,8 @@ app.get(`/qa/:id`, (req, res) => {
     }
   });
 });
+
+/* QUESTIONS ========================================= */
 
 // Post a new question for a specified product
 app.post(`/qa/:id`, (req, res) => {
@@ -42,6 +46,32 @@ app.post(`/qa/:id`, (req, res) => {
     }
   });
 });
+
+// Update helpfulness of question
+app.put(`/qa/questions/:id/helpful`, (req, res) => {
+  const question_id = req.params.id;
+  queries.markQuestionHelpful(question_id, (err, response) => {
+    if (err) {
+      res.status(400).send('Post unsuccessful.');
+    } else {
+      res.send('Question marked as helpful!');
+    }
+  });
+});
+
+// Report question
+app.put(`/qa/questions/:id/report`, (req, res) => {
+  const question_id = req.params.id;
+  queries.reportQuestion(question_id, (err, response) => {
+    if (err) {
+      res.status(400).send('Post unsuccessful.');
+    } else {
+      res.send('Question reported!');
+    }
+  });
+});
+
+/* ANSWERS =========================================== */
 
 // Post an answer to a specified question
 app.post(`/qa/questions/:id/`, (req, res) => {
@@ -67,30 +97,6 @@ app.post(`/qa/answers/:id/`, (req, res) => {
       res.status(400).send('Post unsuccessful.');
     } else {
       res.send('Photo posted!');
-    }
-  });
-});
-
-// Update helpfulness of question
-app.put(`/qa/questions/:id/helpful`, (req, res) => {
-  const question_id = req.params.id;
-  queries.markQuestionHelpful(question_id, (err, response) => {
-    if (err) {
-      res.status(400).send('Post unsuccessful.');
-    } else {
-      res.send('Question marked as helpful!');
-    }
-  });
-});
-
-// Report question
-app.put(`/qa/questions/:id/report`, (req, res) => {
-  const question_id = req.params.id;
-  queries.reportQuestion(question_id, (err, response) => {
-    if (err) {
-      res.status(400).send('Post unsuccessful.');
-    } else {
-      res.send('Question reported!');
     }
   });
 });
