@@ -1,57 +1,10 @@
 # qa-api-service
 <br />
 <p align="center">
-  <h1 align="center">Project Catwalk</h1>
+  <h1 align="center">Houston System Design</h1>
 
   <p align="center">
     Custom-built RESTful API to support server and database operations for a high-end fashion website that can scale to meet the demands of production traffic.
-
-
-Each member of your team will own one of the services that make up the full API. This project requires you to work independently to first design a database and server that meet the requirements of your application, and then deploy and scale this service to support (a minimum of) 100 requests per second on EC2 using a t2.micro instance.
-    <br />
-    <h3 align="center">
-     <strong>Author »</strong>
-    <br />
-    <br />
-    <a href="https://github.com/itsme-sunil">Sunil Gadgil</a>
-     </h3>
-  </p>
-</p>
-
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about">About The Project</a>
-      <ul>
-        <li><a href="#stack">Built With</a></li>
-      </ul>
-    </li>
-    <li><a href="#system-design">System Design</a></li>
-    <li><a href="#database-and-etl">Database and ETL</a></li>
-    <li><a href="#api-server">API Server</a></li>
-    <li><a href="#optimization">Optimization</a></li>
-    <li><a href="#deployment">Deployment</a></li>
-    <li><a href="#stress-testing">Stress Testing</a></li>
-    <li>
-     <a href="#workflow">Workflow</a>
-     <ul>
-      <li><a href="#trello">Trello</a></li>
-      <li><a href="#version-control">Version Control</a></li>
-     </ul>
-    </li>
-    <li>
-     <a href="#development">Development</a>
-     <ul>
-      <li><a href="#repo">Repo</a></li>
-      <li><a href="#install">Install</a></li>
-      <li><a href="#start-scripts">Start Scripts</a></li>
-      <li><a href="#github-api-token">Github API token</a></li>
-     </ul>
-    </li>
-  </ol>
-</details>
 
 # About
 I was tasked with re-engineering the backend of the "Questions and Answers" service of a mock fashion website frontend. I designed:
@@ -64,52 +17,7 @@ I was tasked with re-engineering the backend of the "Questions and Answers" serv
 
 The final product, when tested with <a href="https://loader.io">loader.io</a> with a maximum of 667 users per second, registered an average response time of 5 ms with a 0.0% error rate.
 
-![](Stress test screenshot)
-
-
-## System Design
-**Features:**
-
-  * *Search Bar*: searches on change for products by product name or category - clicking the search bar renders a drop-down list of products to choose from
-
-![](client/data/gifs/header.gif)
-
-
-## Database and ETL
-**Features:**
-
-  * *Product Information*: dynamically renders information such as product rating, category, name, and price
-  * *Style Selector*: presents the user with all styles and has the ability to toggle between them
-  * *Add to Cart*: includes a size selector, capable of handling an out of stock size, button will add the currently selected item to the cart
-  * *Image Gallery*: displays photos specific to the currently selected style, and user can toggle an extended view on main image
-
-![](./client/data/gifs/overview.gif)
-
-
-## API Server
-
-** write out list of different routes (and query strings to accompany them)
-* (Morgan)
-
-  ![](./client/data/gifs/related.gif)
-
-
-## Optimization
-
-** indexing, (denormalization)
-
- ![](client/data/gifs/questions.gif)
-
-
-## Deployment
-
-** AWS EC2 Docker
-
- ![](./client/data/gifs/reviews.gif)
-
-
-## Stress Testing
-**loader.io, numbers and screenshots
+![](api/data/readMeFiles/loader-stress-test.png)
 
 
 # Stack
@@ -128,7 +36,6 @@ The final product, when tested with <a href="https://loader.io">loader.io</a> wi
       <td>
         <img alt="Express.js" src="https://img.shields.io/badge/express.js-%23404d59.svg?&style=for-the-badge"/>
         <img alt="Postgres" src ="https://img.shields.io/badge/postgres-%23316192.svg?&style=for-the-badge&logo=postgresql&logoColor=white"/>
-        <img alt="MongoDB" src ="https://img.shields.io/badge/MongoDB-%234ea94b.svg?&style=for-the-badge&logo=mongodb&logoColor=white"/>
       </td>
     </tr>
     <tr>
@@ -153,7 +60,6 @@ The final product, when tested with <a href="https://loader.io">loader.io</a> wi
       <th>Deployment</th>
       <td>
         <img alt="AWS" src="https://img.shields.io/badge/AWS-%23FF9900.svg?&style=for-the-badge&logo=amazon-aws&logoColor=white"/>
-        <img alt="Docker" src="https://img.shields.io/badge/docker-%230db7ed.svg?&style=for-the-badge&logo=docker&logoColor=white"/>
       </td>
     </tr>
   </tbody>
@@ -171,15 +77,13 @@ We utilized Git Feature Branch workflow. All pull requests in Github were review
 # Development
 
 ## Repo
-`git clone https://github.com/ht-atx55-team-timbre/project-catwalk.git`
+`git clone https://github.com/SDC-team-houston/qa-service`
 
 ## Install
 `npm install`
 
 ## Start Scripts
-```
-npm start
-```
+`npm start`
 
 ## Install Postgres
 <a href="https://brew.sh/">Install Homebrew</a>
